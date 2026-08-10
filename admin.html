@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chai & Kafe — Executive Admin Dashboard</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header>
+    <a href="admin.html" class="brand">
+      <div class="brand-icon">⚡</div>
+      <div>
+        <div class="brand-title">Admin Dashboard</div>
+        <div class="brand-subtitle">Chai & Kafe Console</div>
+      </div>
+    </a>
+
+    <nav>
+      <a href="index.html"><i data-feather="coffee"></i> Customer Menu</a>
+      <a href="admin.html" class="active"><i data-feather="grid"></i> Dashboard</a>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="btn-icon" id="theme-toggle-admin" title="Toggle Theme">
+        <i data-feather="moon" id="admin-theme-icon"></i>
+      </button>
+      <button class="btn-add small" id="btn-logout" style="background: var(--danger); display: none;">
+        <i data-feather="log-out"></i> Logout
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Passcode Login View -->
+    <div id="login-view" style="max-width: 420px; margin: 60px auto;">
+      <div class="card" style="padding: 32px; text-align: center;">
+        <div class="brand-icon" style="margin: 0 auto 16px auto; width: 54px; height: 54px; font-size: 26px;">🔒</div>
+        <h2>Admin Authentication</h2>
+        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px;">Enter administrative passcode to unlock management metrics and controls.</p>
+        
+        <div class="form-group" style="text-align: left;">
+          <label>Passcode</label>
+          <input type="password" id="admin-pass" class="form-control" placeholder="Enter admin password..." />
+        </div>
+
+        <button id="login-btn" class="btn-checkout" style="margin-top: 8px;">Unlock Dashboard</button>
+        
+        <div style="margin-top: 16px; background: var(--bg-subtle); padding: 10px; border-radius: var(--radius-sm); font-size: 12px; color: var(--text-muted);">
+          🔑 Demo Password: <strong>admin123</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Admin Dashboard View -->
+    <div id="dashboard-view" style="display: none;">
+      <div class="admin-container">
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar">
+          <ul class="sidebar-menu">
+            <li><button class="active" data-tab="analytics"><i data-feather="bar-chart-2"></i> Analytics</button></li>
+            <li><button data-tab="inventory"><i data-feather="box"></i> Inventory</button></li>
+            <li><button data-tab="orders"><i data-feather="shopping-cart"></i> Orders Pipeline</button></li>
+            <li><button data-tab="bills"><i data-feather="file-text"></i> Bills & Revenue</button></li>
+            <li><button data-tab="staff"><i data-feather="users"></i> Staff Team</button></li>
+          </ul>
+
+          <div style="margin-top: 32px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+            <button id="btn-export-csv" class="cat-btn" style="width: 100%; justify-content: center; margin-bottom: 8px;">
+              <i data-feather="download"></i> Export Data CSV
+            </button>
+            <button id="btn-reset-demo" class="cat-btn" style="width: 100%; justify-content: center; color: var(--danger); margin-bottom: 8px;">
+              <i data-feather="refresh-cw"></i> Reset Demo Data
+            </button>
+            <button id="btn-logout-side" class="cat-btn" style="width: 100%; justify-content: center; background: var(--danger-light); color: var(--danger);">
+              <i data-feather="log-out"></i> Logout Admin
+            </button>
+          </div>
+        </aside>
+
+        <!-- Dynamic Admin Content Tabs -->
+        <section class="admin-content" style="flex: 1;">
+          
+          <!-- Tab 1: Analytics -->
+          <div id="tab-analytics" class="admin-tab-pane">
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon"><i data-feather="dollar-sign"></i></div>
+                <div>
+                  <div class="stat-val" id="stat-revenue">₹0</div>
+                  <div class="stat-lbl">Total Gross Revenue</div>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon" style="background: #E0F2FE; color: #0284C7;"><i data-feather="package"></i></div>
+                <div>
+                  <div class="stat-val" id="stat-orders">0</div>
+                  <div class="stat-lbl">Orders Placed</div>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon" style="background: #FEF3C7; color: #D97706;"><i data-feather="alert-circle"></i></div>
+                <div>
+                  <div class="stat-val" id="stat-low-stock">0</div>
+                  <div class="stat-lbl">Low Stock Alerts</div>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon" style="background: var(--success-light); color: var(--success);"><i data-feather="users"></i></div>
+                <div>
+                  <div class="stat-val" id="stat-staff">0</div>
+                  <div class="stat-lbl">Staff On Shift</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Visual SVG Sales Chart -->
+            <div class="card" style="padding: 24px; margin-bottom: 24px;">
+              <h3>Weekly Revenue Trend & Popular Breakdown</h3>
+              <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">Sales activity overview (₹)</p>
+              <div id="sales-chart-container" style="height: 220px; display: flex; align-items: flex-end; gap: 16px; padding-top: 20px;">
+                <!-- Injected bars via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: Inventory -->
+          <div id="tab-inventory" class="admin-tab-pane" style="display:none;">
+            <div class="controls-bar" style="margin-bottom: 16px;">
+              <input type="text" id="inv-search" class="text-input" placeholder="Search inventory items..." style="width: 280px;" />
+              <button id="btn-add-inv-modal" class="btn-add"><i data-feather="plus"></i> Add New Item</button>
+            </div>
+            <div style="overflow-x: auto;">
+              <table id="inventory-table"></table>
+            </div>
+          </div>
+
+          <!-- Tab 3: Orders Pipeline -->
+          <div id="tab-orders" class="admin-tab-pane" style="display:none;">
+            <div class="controls-bar" style="margin-bottom: 16px;">
+              <div class="categories" id="order-status-pills">
+                <button class="cat-btn active" data-status="all">All Orders</button>
+                <button class="cat-btn" data-status="placed">Placed</button>
+                <button class="cat-btn" data-status="preparing">Preparing</button>
+                <button class="cat-btn" data-status="ready">Ready</button>
+                <button class="cat-btn" data-status="completed">Completed</button>
+              </div>
+            </div>
+            <div style="overflow-x: auto;">
+              <table id="orders-table"></table>
+            </div>
+          </div>
+
+          <!-- Tab 4: Bills & Revenue -->
+          <div id="tab-bills" class="admin-tab-pane" style="display:none;">
+            <div style="overflow-x: auto;">
+              <table id="bills-table"></table>
+            </div>
+          </div>
+
+          <!-- Tab 5: Staff Team -->
+          <div id="tab-staff" class="admin-tab-pane" style="display:none;">
+            <div class="controls-bar" style="margin-bottom: 16px;">
+              <button id="btn-add-staff-modal" class="btn-add"><i data-feather="user-plus"></i> Add Staff Member</button>
+            </div>
+            <div style="overflow-x: auto;">
+              <table id="staff-table"></table>
+            </div>
+          </div>
+
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Inventory Add/Edit Modal -->
+  <div class="modal-overlay" id="inv-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="inv-modal-title">Add Inventory Item</h3>
+        <button class="close-btn" id="close-inv-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="inv-form">
+          <input type="hidden" id="inv-id" />
+          <div class="form-group">
+            <label>Item Name</label>
+            <input type="text" id="inv-name" class="form-control" required placeholder="e.g. Adrak Chai" />
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label>Category</label>
+              <select id="inv-category" class="form-control">
+                <option value="Chai & Kaapi">Chai & Kaapi</option>
+                <option value="Cold Beverages">Cold Beverages</option>
+                <option value="Desi Snacks">Desi Snacks</option>
+                <option value="Bakery">Bakery</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Badge Tag</label>
+              <select id="inv-badge" class="form-control">
+                <option value="">None</option>
+                <option value="bestseller">⭐ Bestseller</option>
+                <option value="special">✨ Chef Special</option>
+              </select>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label>Price (₹)</label>
+              <input type="number" step="1" id="inv-price" class="form-control" required placeholder="60" />
+            </div>
+            <div class="form-group">
+              <label>Stock Quantity</label>
+              <input type="number" id="inv-qty" class="form-control" required placeholder="40" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Image Preset / URL</label>
+            <select id="inv-image-preset" class="form-control">
+              <option value="assets/images/kulhad_chai.png">Kulhad Chai Photo</option>
+              <option value="assets/images/filter_coffee.png">Filter Kaapi Photo</option>
+              <option value="assets/images/samosa.png">Samosa Photo</option>
+              <option value="assets/images/vada_pav.png">Vada Pav Photo</option>
+              <option value="assets/images/iced_macchiato.png">Iced Macchiato Photo</option>
+              <option value="assets/images/matcha.png">Matcha Latte Photo</option>
+              <option value="assets/images/cheesecake.png">Cheesecake Photo</option>
+              <option value="assets/images/avocado_toast.png">Avocado Toast Photo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="inv-desc" class="form-control" rows="2" placeholder="Brief description of flavors..."></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="cat-btn" id="cancel-inv-modal">Cancel</button>
+            <button type="submit" class="btn-add">Save Inventory Item</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Staff Add/Edit Modal -->
+  <div class="modal-overlay" id="staff-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Add Staff Member</h3>
+        <button class="close-btn" id="close-staff-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="staff-form">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="staff-name" class="form-control" required placeholder="e.g. Ramesh Sharma" />
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label>Role</label>
+              <select id="staff-role" class="form-control">
+                <option value="Head Chai Maker / Barista">Head Chai Maker</option>
+                <option value="Snack Chef">Snack Chef</option>
+                <option value="Shift Manager">Shift Manager</option>
+                <option value="Service Host">Service Host</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Shift Schedule</label>
+              <select id="staff-shift" class="form-control">
+                <option value="Morning (7am - 3pm)">Morning (7am - 3pm)</option>
+                <option value="Evening (3pm - 11pm)">Evening (3pm - 11pm)</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="cat-btn" id="cancel-staff-modal">Cancel</button>
+            <button type="submit" class="btn-add">Save Staff</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Area -->
+  <div id="toast-container"></div>
+
+  <script src="js/admin.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.feather) feather.replace();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chai & Kafe — Artisan Indian Bistro & Chai Bar</title>
+  <meta name="description" content="Savor authentic Kulhad Masala Chai, South Indian Filter Kaapi, fresh Punjabi Samosas, and artisan cafe delights at Chai & Kafe." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header>
+    <a href="index.html" class="brand">
+      <div class="brand-icon">🫖</div>
+      <div>
+        <div class="brand-title">Chai & Kafe</div>
+        <div class="brand-subtitle">Artisan Indian Bistro</div>
+      </div>
+    </a>
+
+    <nav>
+      <a href="index.html" class="active"><i data-feather="coffee"></i> Menu</a>
+      <a href="#" id="track-order-nav"><i data-feather="clock"></i> Track Order</a>
+      <a href="admin.html"><i data-feather="shield"></i> Admin Portal</a>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="btn-icon" id="theme-toggle" title="Toggle Theme">
+        <i data-feather="moon" id="theme-icon"></i>
+      </button>
+
+      <button class="btn-icon" id="wishlist-toggle" title="View Wishlist">
+        <i data-feather="heart"></i>
+        <span class="cart-count" id="wishlist-count" style="display:none; background: #EF4444;">0</span>
+      </button>
+
+      <button class="btn-icon" id="cart-toggle" title="Open Shopping Cart">
+        <i data-feather="shopping-bag"></i>
+        <span class="cart-count" id="cart-badge-count">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero Banner -->
+    <section class="hero">
+      <div class="hero-content">
+        <span class="hero-tag">Asli Desi Masala Chai & Fresh Samosas</span>
+        <h2>Authentic Chai, Kaapi & Fusion Street Bites</h2>
+        <p>Savor piping hot Kulhad Masala Chai, South Indian Filter Kaapi, Mumbai Vada Pav, and freshly fried Punjabi Samosas.</p>
+        <div class="search-bar-hero">
+          <input type="text" id="hero-search-input" placeholder="Search Kulhad Chai, Samosa, Filter Kaapi..." />
+          <button id="hero-search-btn"><i data-feather="search"></i> Search</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Category Filters & Search Controls -->
+    <section class="controls-bar">
+      <div class="categories" id="category-pills">
+        <button class="cat-btn active" data-cat="all"><i data-feather="grid"></i> All Items</button>
+        <button class="cat-btn" data-cat="Chai & Kaapi"><i data-feather="coffee"></i> Chai & Kaapi</button>
+        <button class="cat-btn" data-cat="Cold Beverages"><i data-feather="droplet"></i> Chilled Beverages</button>
+        <button class="cat-btn" data-cat="Desi Snacks"><i data-feather="disc"></i> Desi Snacks & Bites</button>
+        <button class="cat-btn" data-cat="Bakery"><i data-feather="pie-chart"></i> Fusion Sweets & Bakery</button>
+      </div>
+
+      <div class="filter-opts">
+        <select id="dietary-filter" class="select-input">
+          <option value="all">🍽️ All Diets</option>
+          <option value="veg">🟢 Pure Veg</option>
+          <option value="nonveg">🔴 Non-Veg</option>
+          <option value="jain">🌱 Jain Friendly</option>
+          <option value="bestseller">⭐ Bestsellers Only</option>
+        </select>
+
+        <select id="sort-select" class="select-input">
+          <option value="popular">Sort: Most Popular</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="name">Name: A to Z</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Menu Grid -->
+    <section>
+      <div class="menu-grid" id="menu-grid">
+        <!-- Injected via JavaScript -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Slide-out Cart Drawer -->
+  <div class="cart-drawer-overlay" id="cart-overlay">
+    <div class="cart-drawer">
+      <div class="cart-header">
+        <h2>Your Cart (<span id="cart-drawer-count">0</span>)</h2>
+        <button class="close-btn" id="close-cart">&times;</button>
+      </div>
+
+      <div class="cart-body" id="cart-items-container">
+        <!-- Cart items injected here -->
+      </div>
+
+      <div class="cart-footer" id="cart-footer-panel">
+        <div class="form-group">
+          <label>Tip the Barista</label>
+          <div class="tip-selector" id="tip-selector">
+            <button class="tip-btn active" data-tip="0">₹0</button>
+            <button class="tip-btn" data-tip="10">₹10</button>
+            <button class="tip-btn" data-tip="20">₹20</button>
+            <button class="tip-btn" data-tip="50">₹50</button>
+          </div>
+        </div>
+
+        <div class="coupon-row">
+          <input type="text" id="coupon-code" class="form-control" placeholder="Promo code (e.g. DESI20)" />
+          <button id="apply-coupon" class="btn-add">Apply</button>
+        </div>
+
+        <div class="form-group">
+          <label>Dining / Delivery Option</label>
+          <select id="order-type-select" class="form-control">
+            <option value="dine-in">Dine-In (Table Service)</option>
+            <option value="takeaway">Takeaway Counter Pickup</option>
+            <option value="delivery">Local Delivery</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="table-number-group">
+          <input type="text" id="table-or-address" class="form-control" placeholder="Table Number (e.g. Table 4)" />
+        </div>
+
+        <div class="form-group">
+          <label>Payment Method</label>
+          <select id="payment-method-select" class="form-control">
+            <option value="upi">UPI (GPay / PhonePe / Paytm)</option>
+            <option value="card">Credit / Debit Card</option>
+            <option value="cash">Pay at Counter / Cash</option>
+          </select>
+        </div>
+
+        <div class="cart-summary-line">
+          <span>Subtotal</span>
+          <span>₹<span id="subtotal-val">0.00</span></span>
+        </div>
+        <div class="cart-summary-line" id="discount-row" style="display:none; color: var(--success);">
+          <span>Desi Discount (20%)</span>
+          <span>-₹<span id="discount-val">0.00</span></span>
+        </div>
+        <div class="cart-summary-line">
+          <span>Tip</span>
+          <span>₹<span id="tip-val">0.00</span></span>
+        </div>
+        <div class="cart-total-line">
+          <span>Total Payable</span>
+          <span>₹<span id="cart-total-val">0.00</span></span>
+        </div>
+
+        <button class="btn-checkout" id="checkout-btn">Proceed & Pay</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customization Modal -->
+  <div class="modal-overlay" id="custom-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="custom-title">Customize Item</h3>
+        <button class="close-btn" id="close-custom-modal">&times;</button>
+      </div>
+      <div class="modal-body" id="custom-body">
+        <!-- Dynamic options injected here -->
+      </div>
+      <div class="modal-footer">
+        <strong style="margin-right: auto; align-self: center;" id="custom-price-display">₹0</strong>
+        <button class="btn-add" id="confirm-add-custom">Add to Order</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Tracker Modal -->
+  <div class="modal-overlay" id="tracker-modal">
+    <div class="modal-box" style="max-width: 550px;">
+      <div class="modal-header">
+        <h3>Live Order Tracker</h3>
+        <button class="close-btn" id="close-tracker">&times;</button>
+      </div>
+      <div class="modal-body" id="tracker-body">
+        <!-- Stepper and Order details -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Area -->
+  <div id="toast-container"></div>
+
+  <script src="js/app.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.feather) feather.replace();
+    });
+  </script>
+</body>
+</html>
